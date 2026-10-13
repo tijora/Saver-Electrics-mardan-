@@ -1,887 +1,707 @@
-```html
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saver Electrics Mardan | Premium Lighting & Home Decor Electrics</title>
+    <title>Saver Electrics Mardan | Premium Lighting & Decor</title>
     
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Saver Electrics Mardan - Illuminating Mardan with luxury chandeliers, smart electrics, fancy switches, and modern home decor lighting solutions.">
-    <meta name="keywords" content="Saver Electrics, Mardan lighting, Chandeliers Mardan, Smart electrics KPK, Fancy lights Mardan">
-
-    <!-- Google Fonts: Outfit & Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- FontAwesome Icons CDN -->
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#070a12',
-                            cardDark: '#0f172a',
-                            amber: '#f59e0b',
-                            amberGlow: '#fbbf24',
-                            cyan: '#06b6d4',
-                            lightBg: '#f8fafc',
-                            lightCard: '#ffffff'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
-                    },
-                    animation: {
-                        'pulse-glow': 'pulseGlow 3s infinite ease-in-out',
-                        'float': 'float 6s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        pulseGlow: {
-                            '0%, 100%': { filter: 'drop-shadow(0 0 15px rgba(245, 158, 11, 0.4))' },
-                            '50%': { filter: 'drop-shadow(0 0 30px rgba(6, 182, 212, 0.8))' },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-12px)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Three.js for 3D Background -->
+    
+    <!-- Three.js for 3D Effects -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
-        /* Custom scrollbar and glassmorphism styling */
-        ::-webkit-scrollbar {
-            width: 8px;
+        :root {
+            --primary: #FFB800;
+            --primary-glow: rgba(255, 184, 0, 0.4);
+            --bg-dark: #0A0D14;
+            --card-dark: #121824;
+            --text-dark: #F3F4F6;
+            --text-muted-dark: #9CA3AF;
+            --border-dark: rgba(255, 255, 255, 0.1);
+            
+            --bg-light: #F8FAFC;
+            --card-light: #FFFFFF;
+            --text-light: #0F172A;
+            --text-muted-light: #64748B;
+            --border-light: rgba(0, 0, 0, 0.1);
+            
+            --bg: var(--bg-dark);
+            --card-bg: var(--card-dark);
+            --text: var(--text-dark);
+            --text-muted: var(--text-muted-dark);
+            --border: var(--border-dark);
+            --glass: rgba(18, 24, 36, 0.75);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        ::-webkit-scrollbar-track {
-            background: #070a12;
+
+        body.light-mode {
+            --bg: var(--bg-light);
+            --card-bg: var(--card-light);
+            --text: var(--text-light);
+            --text-muted: var(--text-muted-light);
+            --border: var(--border-light);
+            --glass: rgba(255, 255, 255, 0.85);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #f59e0b;
-            border-radius: 4px;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
         }
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.75);
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--glass);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .light .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid rgba(0, 0, 0, 0.08);
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
         }
-        .glow-border {
-            box-shadow: 0 0 20px -5px rgba(245, 158, 11, 0.3);
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary), #FF8C00);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.3rem;
+            box-shadow: 0 0 20px var(--primary-glow);
         }
-        .glow-border:hover {
-            box-shadow: 0 0 30px 2px rgba(245, 158, 11, 0.6);
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.5px;
         }
-        canvas#hero-canvas {
+
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 14px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Hero Section with 3D Canvas */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        #canvas-container {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 1;
-            pointer-events: auto;
+            opacity: 0.7;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 650px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 184, 0, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, #FFB800, #FF8C00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #FF8C00);
+            color: #000;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 10px 30px var(--primary-glow);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px var(--primary-glow);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Leadership / Owner Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .leadership {
+            padding: 6rem 5%;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .leadership-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .leader-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leader-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .leader-img-wrapper {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            padding: 6px;
+            background: linear-gradient(135deg, var(--primary), transparent);
+            position: relative;
+        }
+
+        .leader-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .leader-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .leader-card .role {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .leader-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Products Showcase */
+        .products {
+            padding: 6rem 5%;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contact-seller-btn {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Contact & Social Section */
+        .contact-section {
+            padding: 6rem 5%;
+            background: var(--card-bg);
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3rem;
+        }
+
+        .contact-info-box {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            background: var(--bg);
+            padding: 1.2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .info-card i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .social-btn.fb { background: #1877F2; }
+        .social-btn.tiktok { background: #000; border: 1px solid var(--border); }
+        .social-btn.wa { background: #25D366; }
+
+        .social-btn:hover { opacity: 0.85; transform: translateY(-2px); }
+
+        .map-wrapper {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            height: 350px;
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 5%;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Mobile Styling */
+        @media (max-width: 768px) {
+            header { padding: 1rem; }
+            .hero h1 { font-size: 2.5rem; }
+            nav { display: none; }
         }
     </style>
 </head>
-<body class="bg-brand-dark text-slate-100 font-sans transition-colors duration-300 light:bg-brand-lightBg light:text-slate-800 antialiased overflow-x-hidden selection:bg-brand-amber selection:text-black">
+<body>
 
-    <!-- Navigation Header -->
-    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 glass-panel border-b border-slate-800/50 light:border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            
-            <!-- Logo -->
-            <a href="#home" class="flex items-center gap-3 group">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-amber to-amber-600 p-2 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform flex items-center justify-center">
-                    <!-- SVG Luxury Bulb Logo -->
-                    <svg viewBox="0 0 24 24" class="w-8 h-8 fill-none stroke-slate-950 stroke-[2] stroke-linecap-round stroke-linejoin-round">
-                        <path d="M12 2a6 6 0 0 0-6 6c0 2.2 1.2 4.1 3 5.2V16a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-2.8c1.8-1.1 3-3 3-5.2a6 6 0 0 0-6-6z"/>
-                        <path d="M9 21h6"/>
-                        <path d="M10 18h4"/>
-                        <path d="M12 6v4"/>
-                        <circle cx="12" cy="10" r="1" fill="#070a12"/>
-                    </svg>
-                </div>
-                <div class="flex flex-col">
-                    <span class="font-heading font-extrabold text-xl sm:text-2xl tracking-tight bg-gradient-to-r from-amber-400 via-amber-200 to-amber-500 bg-clip-text text-transparent group-hover:from-white group-hover:to-amber-400 transition-all">SAVER ELECTRICS</span>
-                    <span class="text-[10px] tracking-widest text-brand-cyan uppercase font-semibold">Mardan • KPK</span>
-                </div>
-            </a>
-
-            <!-- Desktop Navigation Menu -->
-            <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-300 light:text-slate-600">
-                <a href="#home" class="hover:text-brand-amber transition-colors">Home</a>
-                <a href="#products" class="hover:text-brand-amber transition-colors">Decor & Lights</a>
-                <a href="#about" class="hover:text-brand-amber transition-colors">About Us</a>
-                <a href="#calculator" class="hover:text-brand-amber transition-colors">Estimator</a>
-                <a href="#location" class="hover:text-brand-amber transition-colors">Location</a>
-                <a href="#contact" class="hover:text-brand-amber transition-colors">Contact</a>
-            </nav>
-
-            <!-- Header Controls & Direct Call CTA -->
-            <div class="flex items-center gap-4">
-                <!-- Light/Dark Mode Switcher -->
-                <button id="theme-toggle" aria-label="Toggle Theme" class="p-2.5 rounded-full bg-slate-800/80 light:bg-slate-200 hover:bg-brand-amber hover:text-black text-amber-400 transition-all">
-                    <i id="theme-icon" class="fas fa-moon text-lg"></i>
-                </button>
-
-                <!-- Phone Direct Call CTA (Desktop) -->
-                <a href="tel:03464462002" class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm shadow-md shadow-amber-500/20 hover:scale-105 transition-all">
-                    <i class="fas fa-phone-alt"></i>
-                    <span>0346 4462002</span>
-                </a>
-
-                <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" aria-label="Open Mobile Menu" class="lg:hidden p-2 text-slate-300 light:text-slate-700 text-2xl focus:outline-none">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Mobile Drawer Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-slate-950/95 light:bg-white/95 backdrop-blur-xl border-b border-slate-800 px-6 py-6 space-y-4">
-            <a href="#home" class="mobile-nav-link block text-lg font-semibold text-slate-200 light:text-slate-800 hover:text-brand-amber">Home</a>
-            <a href="#products" class="mobile-nav-link block text-lg font-semibold text-slate-200 light:text-slate-800 hover:text-brand-amber">Decor & Electrics</a>
-            <a href="#about" class="mobile-nav-link block text-lg font-semibold text-slate-200 light:text-slate-800 hover:text-brand-amber">About Us</a>
-            <a href="#calculator" class="mobile-nav-link block text-lg font-semibold text-slate-200 light:text-slate-800 hover:text-brand-amber">Estimator</a>
-            <a href="#location" class="mobile-nav-link block text-lg font-semibold text-slate-200 light:text-slate-800 hover:text-brand-amber">Location</a>
-            <a href="#contact" class="mobile-nav-link block text-lg font-semibold text-slate-200 light:text-slate-800 hover:text-brand-amber">Contact</a>
-            
-            <div class="pt-4 border-t border-slate-800 light:border-slate-200 flex flex-col gap-3">
-                <a href="tel:03464462002" class="w-full text-center py-3 rounded-xl bg-amber-500 text-slate-950 font-bold flex items-center justify-center gap-2">
-                    <i class="fas fa-phone-alt"></i> Call 0346 4462002
-                </a>
-                <a href="https://wa.me/923464462002" target="_blank" class="w-full text-center py-3 rounded-xl bg-emerald-600 text-white font-bold flex items-center justify-center gap-2">
-                    <i class="fab fa-whatsapp text-lg"></i> WhatsApp Quick Inquiry
-                </a>
-            </div>
-        </div>
+    <!-- Header Navigation -->
+    <header>
+        <a href="#" class="logo-container">
+            <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div class="logo-text">SAVER <span>ELECTRICS</span></div>
+        </a>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#management">Management</a>
+            <a href="#products">Decor Collection</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fa-solid fa-moon"></i>
+            <span id="themeText">Dark</span>
+        </button>
     </header>
 
-    <!-- HERO SECTION WITH 3D CANVAS -->
-    <section id="home" class="relative min-h-screen pt-28 flex items-center overflow-hidden bg-gradient-to-b from-brand-dark via-slate-950 to-brand-dark light:from-slate-100 light:via-slate-50 light:to-white">
-        <!-- 3D Three.js Interactive Sphere Canvas -->
-        <canvas id="hero-canvas"></canvas>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div id="canvas-container"></div>
+        <div class="hero-content">
+            <div class="hero-badge"><i class="fa-solid fa-star"></i> Premier Electric & Decor Store Mardan</div>
+            <h1>Illuminate Your Space With <span>Luxury Lighting</span></h1>
+            <p>Aapke ghar aur office ko modern aur stylish look dene ke liye Mardan ka sabse unique aur trusted electric & decor lights showroom.</p>
+            <div class="cta-group">
+                <a href="tel:03464462002" class="btn-primary"><i class="fa-solid fa-phone"></i> Call Now</a>
+                <a href="https://wa.me/923464462002" target="_blank" class="btn-secondary"><i class="fa-brands fa-whatsapp"></i> WhatsApp Quote</a>
+            </div>
+        </div>
+    </section>
 
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full pointer-events-none">
-            <div class="max-w-3xl space-y-6 pointer-events-auto">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-amber-500/30 text-amber-400 text-xs sm:text-sm font-semibold tracking-wide uppercase">
-                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-                    Mardan's Premier Electric & Home Decor Hub
+    <!-- Leadership / Owners Section -->
+    <section class="leadership" id="management">
+        <div class="section-title">
+            <h2>Meet Our Leadership</h2>
+            <p>Quality services and customer satisfaction guided by experience & modern vision.</p>
+        </div>
+        <div class="leadership-grid">
+            <!-- Owner -->
+            <div class="leader-card">
+                <div class="leader-img-wrapper">
+                    <!-- Aap apni cropped owner photo lagayein -->
+                    <img src="1791879056975.jpg" alt="Saver Electrics Owner">
                 </div>
-
-                <h1 class="font-heading font-extrabold text-4xl sm:text-6xl lg:text-7xl leading-tight text-white light:text-slate-900 tracking-tight">
-                    Illuminate Your Space With <span class="bg-gradient-to-r from-amber-400 via-yellow-300 to-cyan-400 bg-clip-text text-transparent">Elegance & Precision</span>
-                </h1>
-
-                <p class="text-base sm:text-xl text-slate-300 light:text-slate-600 font-normal leading-relaxed max-w-2xl">
-                    Discover luxury chandeliers, fancy wall sconces, modern smart switches, and high-efficiency electric appliances. Transforming homes and commercial spaces in Mardan with unmatched brilliance.
-                </p>
-
-                <!-- CTA Buttons -->
-                <div class="flex flex-wrap items-center gap-4 pt-4">
-                    <a href="#products" class="px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-extrabold text-base tracking-wide shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all duration-300">
-                        Explore Collection <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                    
-                    <a href="https://wa.me/923464462002?text=Hello%20Saver%20Electrics,%20I%20would%20like%20to%20inquire%20about%20your%20products." target="_blank" class="px-8 py-4 rounded-xl glass-panel hover:bg-slate-800/80 light:hover:bg-slate-200 text-white light:text-slate-800 font-bold text-base flex items-center gap-3 border border-emerald-500/40 hover:border-emerald-500 transition-all duration-300">
-                        <i class="fab fa-whatsapp text-xl text-emerald-400"></i> WhatsApp Order
-                    </a>
+                <h3>Founder & Owner</h3>
+                <div class="role">Saver Electrics Mardan</div>
+                <p>Ensuring quality products and build trust with years of excellence in electric supply & home decor solutions.</p>
+            </div>
+            <!-- Son -->
+            <div class="leader-card">
+                <div class="leader-img-wrapper">
+                    <!-- Aap apni cropped son photo lagayein -->
+                    <img src="1791879056975.jpg" alt="Saver Electrics Management">
                 </div>
+                <h3>Managing Director</h3>
+                <div class="role">Next-Gen Decor Expert</div>
+                <p>Bringing modern 3D lighting designs, smart home systems, and premium aesthetic trends to Mardan.</p>
+            </div>
+        </div>
+    </section>
 
-                <!-- Quick Stats -->
-                <div class="pt-10 grid grid-cols-3 gap-4 border-t border-slate-800/80 light:border-slate-300 max-w-lg">
-                    <div>
-                        <p class="font-heading font-bold text-2xl sm:text-3xl text-amber-400">100%</p>
-                        <p class="text-xs text-slate-400 light:text-slate-500">Authentic Products</p>
+    <!-- Product Showcase -->
+    <section class="products" id="products">
+        <div class="section-title">
+            <h2>Premium Home Decor</h2>
+            <p>Explore our exclusive range of luxury chandeliers, fancy lights, and modern electrical fittings.</p>
+        </div>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&w=600&q=80" alt="Chandelier" class="product-img">
+                <div class="product-info">
+                    <h3>Modern Crystal Chandeliers</h3>
+                    <p>Luxury gold & crystal finish designs perfect for living rooms and halls.</p>
+                    <div class="product-meta">
+                        <a href="https://wa.me/923464462002?text=Inquiry%20about%20Crystal%20Chandelier" class="contact-seller-btn">Inquire Now <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <div>
-                        <p class="font-heading font-bold text-2xl sm:text-3xl text-cyan-400">500+</p>
-                        <p class="text-xs text-slate-400 light:text-slate-500">Decor Designs</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80" alt="Fancy Lights" class="product-img">
+                <div class="product-info">
+                    <h3>Architectural LED Wall Lights</h3>
+                    <p>Elegant indoor and outdoor ambient wall decor lights with energy-saving tech.</p>
+                    <div class="product-meta">
+                        <a href="https://wa.me/923464462002?text=Inquiry%20about%20Wall%20Lights" class="contact-seller-btn">Inquire Now <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <div>
-                        <p class="font-heading font-bold text-2xl sm:text-3xl text-amber-400">Mardan</p>
-                        <p class="text-xs text-slate-400 light:text-slate-500">Local Showroom</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=600&q=80" alt="Pendant Lights" class="product-img">
+                <div class="product-info">
+                    <h3>Smart Modular Switches & Lights</h3>
+                    <p>Premium touch switches and futuristic ceiling lights for modern homes.</p>
+                    <div class="product-meta">
+                        <a href="https://wa.me/923464462002?text=Inquiry%20about%20Smart%20Switches" class="contact-seller-btn">Inquire Now <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PRODUCTS & DECOR SECTION -->
-    <section id="products" class="py-24 bg-slate-950 light:bg-slate-50 relative z-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Contact & Map -->
+    <section class="contact-section" id="contact">
+        <div class="section-title">
+            <h2>Visit Us or Get in Touch</h2>
+            <p>Mardan's finest electric destination is just a call or visit away.</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info-box">
+                <div class="info-card">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <h4>Location</h4>
+                        <p>Main Market / Electric Hub, Mardan, KPK, Pakistan</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <h4>Contact Numbers</h4>
+                        <p>0346-4462002 <br> 0322-3964374</p>
+                    </div>
+                </div>
+                
+                <div class="social-buttons">
+                    <a href="https://www.facebook.com/share/1C8mYyjk4u/?mibextid=wwXIfr" target="_blank" class="social-btn fb"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+                    <a href="https://www.tiktok.com/@saverelectric?_r=1&_t=ZS-9APBtUlHa2X" target="_blank" class="social-btn tiktok"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+                </div>
+            </div>
             
-            <!-- Section Title -->
-            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
-                <span class="text-brand-amber font-semibold text-sm tracking-widest uppercase">Luxury Electric Collections</span>
-                <h2 class="font-heading text-3xl sm:text-5xl font-extrabold text-white light:text-slate-900">
-                    Premium Home Decor & Smart Electrics
-                </h2>
-                <p class="text-slate-400 light:text-slate-600">
-                    Handpicked selection of high-end lighting fixtures, chandeliers, fancy ceiling fans, and smart home fittings available at our Mardan store.
-                </p>
-
-                <!-- Search and Filter Bar -->
-                <div class="pt-6 flex flex-col md:flex-row items-center justify-between gap-4 glass-panel p-4 rounded-2xl">
-                    <!-- Search Input -->
-                    <div class="relative w-full md:w-72">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="product-search" placeholder="Search chandeliers, lights..." class="w-full pl-11 pr-4 py-2.5 rounded-xl bg-slate-900 light:bg-white text-sm text-slate-200 light:text-slate-800 border border-slate-700 light:border-slate-300 focus:outline-none focus:border-brand-amber">
-                    </div>
-
-                    <!-- Category Buttons -->
-                    <div class="flex flex-wrap items-center justify-center gap-2 w-full md:w-auto" id="category-filters">
-                        <button data-category="all" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-brand-amber text-slate-950 transition-all">All Items</button>
-                        <button data-category="chandeliers" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800 light:bg-slate-200 text-slate-300 light:text-slate-700 hover:bg-slate-700 transition-all">Chandeliers</button>
-                        <button data-category="wall-sconces" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800 light:bg-slate-200 text-slate-300 light:text-slate-700 hover:bg-slate-700 transition-all">Wall Sconces</button>
-                        <button data-category="smart-switches" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800 light:bg-slate-200 text-slate-300 light:text-slate-700 hover:bg-slate-700 transition-all">Smart Electrics</button>
-                        <button data-category="fancy-fans" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800 light:bg-slate-200 text-slate-300 light:text-slate-700 hover:bg-slate-700 transition-all">Fancy Fans</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product Cards Grid -->
-            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Product Card 1 -->
-                <div class="product-card group glass-panel rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 glow-border" data-category="chandeliers" data-name="crystal royal chandelier">
-                    <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&w=800&q=80" alt="Royal Crystal Chandelier" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-4 right-4 bg-amber-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-full uppercase">Luxury Line</span>
-                    </div>
-                    <div class="p-6 space-y-3">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-heading font-bold text-xl text-white light:text-slate-900">Royal Crystal Chandelier</h3>
-                            <span class="text-amber-400 font-bold text-lg">PKR 45,000</span>
-                        </div>
-                        <p class="text-xs text-slate-400 light:text-slate-600 line-clamp-2">Multi-tier gold finished crystal LED chandelier designed for high-ceiling living rooms & halls.</p>
-                        <div class="pt-4 flex items-center gap-3">
-                            <button onclick="openInquiryModal('Royal Crystal Chandelier', '45,000')" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all flex items-center justify-center gap-2">
-                                <i class="fas fa-shopping-bag"></i> Inquire Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 2 -->
-                <div class="product-card group glass-panel rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 glow-border" data-category="wall-sconces" data-name="modern gold wall sconce">
-                    <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80" alt="Nordic Gold Wall Light" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-4 right-4 bg-cyan-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-full uppercase">Popular</span>
-                    </div>
-                    <div class="p-6 space-y-3">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-heading font-bold text-xl text-white light:text-slate-900">Nordic Gold Wall Sconce</h3>
-                            <span class="text-amber-400 font-bold text-lg">PKR 8,500</span>
-                        </div>
-                        <p class="text-xs text-slate-400 light:text-slate-600 line-clamp-2">Minimalist warm LED accent wall lamp for bedroom headboards and main corridors.</p>
-                        <div class="pt-4 flex items-center gap-3">
-                            <button onclick="openInquiryModal('Nordic Gold Wall Sconce', '8,500')" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all flex items-center justify-center gap-2">
-                                <i class="fas fa-shopping-bag"></i> Inquire Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 3 -->
-                <div class="product-card group glass-panel rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 glow-border" data-category="smart-switches" data-name="smart wifi touch switch panel">
-                    <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=800&q=80" alt="Smart Touch Switch" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-4 right-4 bg-emerald-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-full uppercase">Smart Home</span>
-                    </div>
-                    <div class="p-6 space-y-3">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-heading font-bold text-xl text-white light:text-slate-900">Smart Glass Touch Switch</h3>
-                            <span class="text-amber-400 font-bold text-lg">PKR 6,200</span>
-                        </div>
-                        <p class="text-xs text-slate-400 light:text-slate-600 line-clamp-2">Tempered glass touch control with Mobile App control, Alexa, & Google Assistant integration.</p>
-                        <div class="pt-4 flex items-center gap-3">
-                            <button onclick="openInquiryModal('Smart Glass Touch Switch', '6,200')" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all flex items-center justify-center gap-2">
-                                <i class="fas fa-shopping-bag"></i> Inquire Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 4 -->
-                <div class="product-card group glass-panel rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 glow-border" data-category="fancy-fans" data-name="fancy ceiling fan with light">
-                    <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80" alt="Luxury Fan Light" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-4 right-4 bg-amber-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-full uppercase">New Arrival</span>
-                    </div>
-                    <div class="p-6 space-y-3">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-heading font-bold text-xl text-white light:text-slate-900">Retractable Blade Fan Light</h3>
-                            <span class="text-amber-400 font-bold text-lg">PKR 28,000</span>
-                        </div>
-                        <p class="text-xs text-slate-400 light:text-slate-600 line-clamp-2">Remote-controlled silent BLDC ceiling fan with integrated dimmable LED ring light.</p>
-                        <div class="pt-4 flex items-center gap-3">
-                            <button onclick="openInquiryModal('Retractable Fan Light', '28,000')" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all flex items-center justify-center gap-2">
-                                <i class="fas fa-shopping-bag"></i> Inquire Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 5 -->
-                <div class="product-card group glass-panel rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 glow-border" data-category="chandeliers" data-name="modern ring pendant light">
-                    <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=800&q=80" alt="Ring Pendant Light" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-4 right-4 bg-amber-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-full uppercase">Trending</span>
-                    </div>
-                    <div class="p-6 space-y-3">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-heading font-bold text-xl text-white light:text-slate-900">3-Ring LED Pendant Light</h3>
-                            <span class="text-amber-400 font-bold text-lg">PKR 22,500</span>
-                        </div>
-                        <p class="text-xs text-slate-400 light:text-slate-600 line-clamp-2">Architectural circular hanging light with 3 light shades (Warm, Cool, Natural White).</p>
-                        <div class="pt-4 flex items-center gap-3">
-                            <button onclick="openInquiryModal('3-Ring LED Pendant Light', '22,500')" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all flex items-center justify-center gap-2">
-                                <i class="fas fa-shopping-bag"></i> Inquire Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product Card 6 -->
-                <div class="product-card group glass-panel rounded-2xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 glow-border" data-category="wall-sconces" data-name="waterproof exterior wall fixture">
-                    <div class="relative h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?auto=format&fit=crop&w=800&q=80" alt="Outdoor Wall Light" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-4 right-4 bg-cyan-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-full uppercase">Outdoor</span>
-                    </div>
-                    <div class="p-6 space-y-3">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-heading font-bold text-xl text-white light:text-slate-900">Outdoor LED Beam Light</h3>
-                            <span class="text-amber-400 font-bold text-lg">PKR 4,800</span>
-                        </div>
-                        <p class="text-xs text-slate-400 light:text-slate-600 line-clamp-2">IP65 Waterproof dual-direction wall beam light for home facade and garden elevation.</p>
-                        <div class="pt-4 flex items-center gap-3">
-                            <button onclick="openInquiryModal('Outdoor LED Beam Light', '4,800')" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all flex items-center justify-center gap-2">
-                                <i class="fas fa-shopping-bag"></i> Inquire Now
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div class="map-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d105658.21631583928!2d71.9568285!3d34.1983058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38d9333a411b9181%3A0x6339d332d73356e4!2sMardan%2C%20Khyber%20Pakhtunkhwa%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
     </section>
 
-    <!-- INTERACTIVE ESTIMATOR SECTION -->
-    <section id="calculator" class="py-20 bg-brand-dark light:bg-white relative z-20 border-y border-slate-800 light:border-slate-200">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass-panel p-8 sm:p-12 rounded-3xl space-y-8 relative overflow-hidden">
-                <div class="absolute -right-16 -top-16 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-                <div class="text-center space-y-3">
-                    <span class="text-brand-cyan text-xs font-bold uppercase tracking-wider">Quick Calculation</span>
-                    <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white light:text-slate-900">Lighting & Electric Estimate Tool</h2>
-                    <p class="text-sm text-slate-400 light:text-slate-600">Select your room count and desired fitting level for an approximate package quote.</p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 light:text-slate-700 uppercase mb-2">Number of Rooms</label>
-                        <select id="est-rooms" class="w-full p-3 rounded-xl bg-slate-900 light:bg-slate-100 text-slate-200 light:text-slate-800 border border-slate-700 light:border-slate-300 focus:outline-none">
-                            <option value="2">2 Rooms / Small Shop</option>
-                            <option value="4" selected>4-5 Rooms (Standard Home)</option>
-                            <option value="8">8-10 Rooms (Large Villa)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 light:text-slate-700 uppercase mb-2">Decor Quality</label>
-                        <select id="est-quality" class="w-full p-3 rounded-xl bg-slate-900 light:bg-slate-100 text-slate-200 light:text-slate-800 border border-slate-700 light:border-slate-300 focus:outline-none">
-                            <option value="standard">Standard Electrics + LED</option>
-                            <option value="premium" selected>Premium Fancy + Wall Sconces</option>
-                            <option value="luxury">Luxury Chandeliers + Smart Touch</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 light:text-slate-700 uppercase mb-2">Wiring Hardware</label>
-                        <select id="est-wiring" class="w-full p-3 rounded-xl bg-slate-900 light:bg-slate-100 text-slate-200 light:text-slate-800 border border-slate-700 light:border-slate-300 focus:outline-none">
-                            <option value="yes">Include Pure Copper Wire Cables</option>
-                            <option value="no">Fixtures Only (No Wiring)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="p-6 rounded-2xl bg-slate-900/90 light:bg-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div>
-                        <p class="text-xs text-slate-400">Estimated Project Range</p>
-                        <p id="est-result" class="font-heading font-black text-3xl text-amber-400">PKR 75,000 - 95,000</p>
-                    </div>
-                    <button id="send-est-whatsapp" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold flex items-center gap-2 transition-all">
-                        <i class="fab fa-whatsapp text-lg"></i> Get Detailed Quote on WhatsApp
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ABOUT US SECTION -->
-    <section id="about" class="py-24 bg-slate-950 light:bg-slate-50 relative z-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <!-- Image Grid -->
-                <div class="grid grid-cols-2 gap-4 relative">
-                    <img src="https://images.unsplash.com/photo-1565814636199-ae8133055c1c?auto=format&fit=crop&w=600&q=80" alt="Showroom Display" class="rounded-2xl object-cover h-64 w-full shadow-lg">
-                    <img src="https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=600&q=80" alt="Fancy Lights Mardan" class="rounded-2xl object-cover h-64 w-full shadow-lg mt-8">
-                </div>
-
-                <!-- Content -->
-                <div class="space-y-6">
-                    <span class="text-brand-amber font-semibold text-sm tracking-widest uppercase">About Saver Electrics</span>
-                    <h2 class="font-heading text-3xl sm:text-5xl font-extrabold text-white light:text-slate-900">
-                        Transforming Houses into Illuminated Masterpieces
-                    </h2>
-                    <p class="text-slate-400 light:text-slate-600 leading-relaxed">
-                        At <strong class="text-amber-400">Saver Electrics Mardan</strong>, we specialize in high-end aesthetic lighting solutions and premium electrical products. Whether you are building a new luxury home or renovating your commercial space, our curated collections offer the perfect blend of elegance, durability, and energy efficiency.
-                    </p>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                        <div class="flex items-start gap-3">
-                            <div class="p-2 rounded-lg bg-amber-500/10 text-amber-400 text-lg">
-                                <i class="fas fa-gem"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white light:text-slate-900">Premium Quality</h4>
-                                <p class="text-xs text-slate-400">Imported glass & durable copper fittings.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-3">
-                            <div class="p-2 rounded-lg bg-cyan-500/10 text-cyan-400 text-lg">
-                                <i class="fas fa-tags"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white light:text-slate-900">Wholesale Rates</h4>
-                                <p class="text-xs text-slate-400">Best market rates across Mardan & KPK.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- LOCATION SECTION -->
-    <section id="location" class="py-20 bg-brand-dark light:bg-white relative z-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto space-y-4 mb-12">
-                <span class="text-brand-amber font-semibold text-sm tracking-widest uppercase">Visit Our Showroom</span>
-                <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-white light:text-slate-900">Store Location in Mardan</h2>
-                <p class="text-slate-400 light:text-slate-600 text-sm">Experience our decor lighting displays live. Visit Saver Electrics in Mardan.</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-                <!-- Info Box -->
-                <div class="glass-panel p-8 rounded-3xl space-y-6 flex flex-col justify-between">
-                    <div class="space-y-6">
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl shrink-0">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white light:text-slate-900">Main Address</h4>
-                                <p class="text-sm text-slate-400 light:text-slate-600 mt-1">Saver Electrics Showroom, Main Electrical Market, Mardan, Khyber Pakhtunkhwa, Pakistan.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl shrink-0">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white light:text-slate-900">Operating Hours</h4>
-                                <p class="text-sm text-slate-400 light:text-slate-600 mt-1">Saturday - Thursday: 09:00 AM - 09:00 PM<br>Friday: Closed</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl shrink-0">
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white light:text-slate-900">Direct Contact</h4>
-                                <p class="text-sm text-slate-400 light:text-slate-600 mt-1">
-                                    0346 4462002<br>
-                                    0322 3964374
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <a href="https://maps.google.com/?q=Mardan+Electrics+Market" target="_blank" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold text-center text-sm transition-all flex items-center justify-center gap-2">
-                        <i class="fas fa-directions"></i> Get Directions on Google Maps
-                    </a>
-                </div>
-
-                <!-- Google Map iFrame Placeholder -->
-                <div class="lg:col-span-2 rounded-3xl overflow-hidden glass-panel h-80 lg:h-auto min-h-[320px]">
-                    <iframe 
-                        title="Saver Electrics Location Mardan"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d105680.12345678!2d72.02!3d34.19!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38d9045330364e0b%3A0xb35a0937a07a1b0!2sMardan%2C%20Khyber%20Pakhtunkhwa%2C%20Pakistan!5e0!3m2!1sen!2s!4v1680000000000!5m2!1sen!2s" 
-                        class="w-full h-full border-0 filter grayscale contrast-125 opacity-80 hover:opacity-100 transition-opacity" 
-                        allowfullscreen="" 
-                        loading="lazy">
-                    </iframe>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTACT & SOCIAL SECTION -->
-    <section id="contact" class="py-20 bg-slate-950 light:bg-slate-100 relative z-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass-panel p-8 sm:p-12 rounded-3xl text-center space-y-8">
-                <span class="text-brand-amber font-semibold text-sm tracking-widest uppercase">Connect With Us</span>
-                <h2 class="font-heading text-3xl sm:text-5xl font-extrabold text-white light:text-slate-900">Follow Saver Electrics Online</h2>
-                <p class="text-slate-400 light:text-slate-600 max-w-xl mx-auto text-sm sm:text-base">
-                    Stay updated with our latest luxury chandelier arrivals, video unboxing, and store discounts through our official social media channels.
-                </p>
-
-                <!-- Official Social Links -->
-                <div class="flex flex-wrap justify-center items-center gap-6 pt-4">
-                    <!-- Facebook -->
-                    <a href="https://www.facebook.com/share/1C8mYyjk4u/?mibextid=wwXIfr" target="_blank" rel="noopener font-bold" class="flex items-center gap-3 px-6 py-4 rounded-2xl bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 transition-all hover:scale-105">
-                        <i class="fab fa-facebook-f text-2xl"></i>
-                        <span class="text-base font-bold">Facebook Page</span>
-                    </a>
-
-                    <!-- TikTok -->
-                    <a href="https://www.tiktok.com/@saverelectric?_r=1&_t=ZS-9APBtUlHa2X" target="_blank" rel="noopener" class="flex items-center gap-3 px-6 py-4 rounded-2xl bg-pink-600/20 hover:bg-pink-600 text-pink-400 hover:text-white border border-pink-500/30 transition-all hover:scale-105">
-                        <i class="fab fa-tiktok text-2xl"></i>
-                        <span class="text-base font-bold">TikTok Profile</span>
-                    </a>
-
-                    <!-- WhatsApp Primary -->
-                    <a href="https://wa.me/923464462002" target="_blank" class="flex items-center gap-3 px-6 py-4 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/30 transition-all hover:scale-105">
-                        <i class="fab fa-whatsapp text-2xl"></i>
-                        <span class="text-base font-bold">0346 4462002</span>
-                    </a>
-
-                    <!-- WhatsApp Secondary -->
-                    <a href="https://wa.me/923223964374" target="_blank" class="flex items-center gap-3 px-6 py-4 rounded-2xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-500/30 transition-all hover:scale-105">
-                        <i class="fab fa-whatsapp text-2xl"></i>
-                        <span class="text-base font-bold">0322 3964374</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-brand-dark light:bg-slate-200 border-t border-slate-800 light:border-slate-300 py-12 relative z-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-amber-500 flex items-center justify-center text-slate-950 font-bold">
-                    SE
-                </div>
-                <div>
-                    <p class="font-heading font-bold text-white light:text-slate-900">Saver Electrics Mardan</p>
-                    <p class="text-xs text-slate-500">© 2026 Saver Electrics. All rights reserved.</p>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-6 text-sm text-slate-400 light:text-slate-600">
-                <a href="#home" class="hover:text-amber-400 transition-colors">Home</a>
-                <a href="#products" class="hover:text-amber-400 transition-colors">Products</a>
-                <a href="#calculator" class="hover:text-amber-400 transition-colors">Estimator</a>
-                <a href="#location" class="hover:text-amber-400 transition-colors">Location</a>
-            </div>
-        </div>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Saver Electrics Mardan. All Rights Reserved.</p>
     </footer>
 
-    <!-- INQUIRY POPUP MODAL -->
-    <div id="inquiry-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="glass-panel p-6 sm:p-8 rounded-3xl max-w-md w-full space-y-6 relative border border-amber-500/40">
-            <button onclick="closeInquiryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
-                <i class="fas fa-times"></i>
-            </button>
-
-            <div class="space-y-2">
-                <h3 class="font-heading text-2xl font-bold text-white light:text-slate-900">Inquire Product</h3>
-                <p class="text-xs text-slate-400">Send an instant WhatsApp message to Saver Electrics Mardan for availability & final discount.</p>
-            </div>
-
-            <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-1">
-                <p class="text-xs text-amber-400 uppercase font-bold">Selected Item</p>
-                <p id="modal-product-name" class="font-bold text-lg text-white">Product Name</p>
-                <p id="modal-product-price" class="text-sm text-slate-300">Price: PKR 0</p>
-            </div>
-
-            <div class="space-y-3">
-                <label class="block text-xs font-semibold text-slate-300 uppercase">Your Name (Optional)</label>
-                <input type="text" id="modal-user-name" placeholder="Enter your name" class="w-full p-3 rounded-xl bg-slate-900 text-slate-200 border border-slate-700 text-sm focus:outline-none focus:border-amber-400">
-            </div>
-
-            <button onclick="sendWhatsAppInquiry()" class="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold flex items-center justify-center gap-2 transition-all">
-                <i class="fab fa-whatsapp text-xl"></i> Order / Inquire via WhatsApp
-            </button>
-        </div>
-    </div>
-
+    <!-- JavaScript & 3D Interactive Setup -->
     <script>
         // Theme Switcher Logic
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const html = document.documentElement;
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeText = document.getElementById('themeText');
+        const themeIcon = themeToggleBtn.querySelector('i');
 
         themeToggleBtn.addEventListener('click', () => {
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            }
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeText.textContent = isLight ? 'Light' : 'Dark';
+            themeIcon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         });
 
-        // Mobile Menu Navigation Toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
+        // 3D Animated Background Setup with Three.js
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        // Particle System for Electric Atmosphere
+        const geometry = new THREE.BufferGeometry();
+        const count = 700;
+        const positions = new Float32Array(count * 3);
+
+        for(let i = 0; i < count * 3; i++) {
+            positions[i] = (Math.random() - 0.5) * 15;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 0.05,
+            color: 0xFFB800,
+            transparent: true,
+            opacity: 0.8
         });
 
-        document.querySelectorAll('.mobile-nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
 
-        let scene, camera, renderer, particles, lightBulbMesh;
+        camera.position.z = 5;
+
+        // Interactive Mouse Movement Effect
         let mouseX = 0, mouseY = 0;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+        });
 
-        function init3D() {
-            const canvas = document.getElementById('hero-canvas');
-            const container = canvas.parentElement;
+        function animate() {
+            requestAnimationFrame(animate);
+            particles.rotation.y += 0.002;
+            particles.rotation.x += 0.001;
 
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 30;
-
-            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            // Particle Electric Sphere
-            const particleCount = 1200;
-            const geometry = new THREE.BufferGeometry();
-            const positions = new Float32Array(particleCount * 3);
-            const colors = new Float32Array(particleCount * 3);
-
-            const colorAmber = new THREE.Color('#f59e0b');
-            const colorCyan = new THREE.Color('#06b6d4');
-
-            for (let i = 0; i < particleCount; i++) {
-                const u = Math.random();
-                const v = Math.random();
-                const theta = u * 2.0 * Math.PI;
-                const phi = Math.acos(2.0 * v - 1.0);
-                const r = 14 + (Math.random() * 3 - 1.5);
-
-                positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-                positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-                positions[i * 3 + 2] = r * Math.cos(phi);
-
-                const mixedColor = Math.random() > 0.5 ? colorAmber : colorCyan;
-                colors[i * 3] = mixedColor.r;
-                colors[i * 3 + 1] = mixedColor.g;
-                colors[i * 3 + 2] = mixedColor.b;
-            }
-
-            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-            const material = new THREE.PointsMaterial({
-                size: 0.35,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.85,
-                blending: THREE.AdditiveBlending
-            });
-
-            particles = new THREE.Points(geometry, material);
-            scene.add(particles);
-
-            // Add center glowing core mesh
-            const coreGeom = new THREE.IcosahedronGeometry(6, 2);
-            const coreMat = new THREE.MeshBasicMaterial({
-                color: 0xf59e0b,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.25
-            });
-            lightBulbMesh = new THREE.Mesh(coreGeom, coreMat);
-            scene.add(lightBulbMesh);
-
-            // Handle Resize
-            window.addEventListener('resize', onWindowResize);
-            document.addEventListener('mousemove', onDocumentMouseMove);
-            document.addEventListener('touchmove', onTouchMove);
-        }
-
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        function onDocumentMouseMove(event) {
-            mouseX = (event.clientX - window.innerWidth / 2) * 0.0008;
-            mouseY = (event.clientY - window.innerHeight / 2) * 0.0008;
-        }
-
-        function onTouchMove(event) {
-            if (event.touches.length > 0) {
-                mouseX = (event.touches[0].clientX - window.innerWidth / 2) * 0.0008;
-                mouseY = (event.touches[0].clientY - window.innerHeight / 2) * 0.0008;
-            }
-        }
-
-        function animate3D() {
-            requestAnimationFrame(animate3D);
-
-            if (particles) {
-                particles.rotation.y += 0.002;
-                particles.rotation.x += 0.001;
-
-                particles.rotation.y += (mouseX - particles.rotation.y) * 0.05;
-                particles.rotation.x += (mouseY - particles.rotation.x) * 0.05;
-            }
-
-            if (lightBulbMesh) {
-                lightBulbMesh.rotation.y -= 0.003;
-            }
+            camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 0.5 - camera.position.y) * 0.05;
 
             renderer.render(scene, camera);
         }
+        animate();
 
-        const searchInput = document.getElementById('product-search');
-        const categoryBtns = document.querySelectorAll('.filter-btn');
-        const productCards = document.querySelectorAll('.product-card');
-
-        let currentCategory = 'all';
-
-        categoryBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                categoryBtns.forEach(b => {
-                    b.classList.remove('bg-brand-amber', 'text-slate-950');
-                    b.classList.add('bg-slate-800', 'light:bg-slate-200', 'text-slate-300', 'light:text-slate-700');
-                });
-                btn.classList.remove('bg-slate-800', 'light:bg-slate-200', 'text-slate-300', 'light:text-slate-700');
-                btn.classList.add('bg-brand-amber', 'text-slate-950');
-
-                currentCategory = btn.getAttribute('data-category');
-                filterProducts();
-            });
+        // Responsive Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
         });
-
-        searchInput.addEventListener('input', filterProducts);
-
-        function filterProducts() {
-            const query = searchInput.value.toLowerCase().trim();
-
-            productCards.forEach(card => {
-                const category = card.getAttribute('data-category');
-                const name = card.getAttribute('data-name').toLowerCase();
-
-                const matchesCategory = (currentCategory === 'all' || category === currentCategory);
-                const matchesSearch = name.includes(query);
-
-                if (matchesCategory && matchesSearch) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        const roomsSelect = document.getElementById('est-rooms');
-        const qualitySelect = document.getElementById('est-quality');
-        const wiringSelect = document.getElementById('est-wiring');
-        const resultDisplay = document.getElementById('est-result');
-
-        function calculateEstimate() {
-            const rooms = parseInt(roomsSelect.value);
-            const quality = qualitySelect.value;
-            const wiring = wiringSelect.value;
-
-            let basePerRoom = 12000;
-            if (quality === 'premium') basePerRoom = 22000;
-            if (quality === 'luxury') basePerRoom = 45000;
-
-            let wiringCost = wiring === 'yes' ? 8000 * rooms : 0;
-            let minTotal = (rooms * basePerRoom) + wiringCost;
-            let maxTotal = Math.round(minTotal * 1.25);
-
-            resultDisplay.textContent = `PKR ${minTotal.toLocaleString()} - ${maxTotal.toLocaleString()}`;
-        }
-
-        roomsSelect.addEventListener('change', calculateEstimate);
-        qualitySelect.addEventListener('change', calculateEstimate);
-        wiringSelect.addEventListener('change', calculateEstimate);
-
-        document.getElementById('send-est-whatsapp').addEventListener('click', () => {
-            const estText = resultDisplay.textContent;
-            const msg = `Hello Saver Electrics! I used your online estimator for ${roomsSelect.value} rooms (${qualitySelect.value} quality). Estimate: ${estText}. Please provide a official quote.`;
-            window.open(`https://wa.me/923464462002?text=${encodeURIComponent(msg)}`, '_blank');
-        });
-
-        // Modal Functions
-        let activeItemName = '';
-        let activeItemPrice = '';
-
-        function openInquiryModal(name, price) {
-            activeItemName = name;
-            activeItemPrice = price;
-            document.getElementById('modal-product-name').textContent = name;
-            document.getElementById('modal-product-price').textContent = `Price: PKR ${price}`;
-            document.getElementById('inquiry-modal').classList.remove('hidden');
-            document.getElementById('inquiry-modal').classList.add('flex');
-        }
-
-        function closeInquiryModal() {
-            document.getElementById('inquiry-modal').classList.remove('flex');
-            document.getElementById('inquiry-modal').classList.add('hidden');
-        }
-
-        function sendWhatsAppInquiry() {
-            const userName = document.getElementById('modal-user-name').value.trim() || 'Customer';
-            const text = `Hello Saver Electrics! My name is ${userName}. I am interested in buying/inquiring about "${activeItemName}" priced at PKR ${activeItemPrice}. Is it available at your Mardan store?`;
-            window.open(`https://wa.me/923464462002?text=${encodeURIComponent(text)}`, '_blank');
-            closeInquiryModal();
-        }
-
-        window.onload = function() {
-            init3D();
-            animate3D();
-        };
     </script>
 </body>
 </html>
-```
+
