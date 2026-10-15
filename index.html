@@ -144,7 +144,7 @@
             color: var(--primary);
         }
 
-        /* Hero Section with 3D Canvas */
+        /* Hero Section with Premium Background & 3D Canvas */
         .hero {
             position: relative;
             min-height: 100vh;
@@ -153,6 +153,9 @@
             padding: 0 5%;
             overflow: hidden;
             padding-top: 80px;
+            background-image: linear-gradient(to right, rgba(10, 13, 20, 0.92), rgba(10, 13, 20, 0.7)), url('https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
         }
 
         #canvas-container {
@@ -162,7 +165,8 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            opacity: 0.7;
+            opacity: 0.5;
+            pointer-events: none;
         }
 
         .hero-content {
@@ -530,8 +534,7 @@
             <!-- Owner -->
             <div class="leader-card">
                 <div class="leader-img-wrapper">
-                    <!-- Aap apni cropped owner photo lagayein -->
-                    <img src="1791879056975.jpg" alt="Saver Electrics Owner">
+                    <img src="https://i.ibb.co/1GTc69Jr" alt="Saver Electrics Owner">
                 </div>
                 <h3>Founder & Owner</h3>
                 <div class="role">Saver Electrics Mardan</div>
@@ -540,8 +543,7 @@
             <!-- Son -->
             <div class="leader-card">
                 <div class="leader-img-wrapper">
-                    <!-- Aap apni cropped son photo lagayein -->
-                    <img src="1791879056975.jpg" alt="Saver Electrics Management">
+                    <img src="https://i.ibb.co/hFhHQ4mg" alt="Saver Electrics Management">
                 </div>
                 <h3>Managing Director</h3>
                 <div class="role">Next-Gen Decor Expert</div>
@@ -704,4 +706,3 @@
     </script>
 </body>
 </html>
-
