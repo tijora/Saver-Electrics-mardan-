@@ -61,7 +61,6 @@
             overflow-x: hidden;
         }
 
-        /* Glassmorphism Navigation */
         header {
             position: fixed;
             top: 0;
@@ -144,7 +143,6 @@
             color: var(--primary);
         }
 
-        /* Hero Section with Premium Background */
         .hero {
             position: relative;
             min-height: 100vh;
@@ -251,7 +249,6 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        /* Leadership / Owner Section */
         .section-title {
             text-align: center;
             margin-bottom: 3.5rem;
@@ -337,7 +334,6 @@
             line-height: 1.5;
         }
 
-        /* Products Showcase */
         .products {
             padding: 6rem 5%;
         }
@@ -399,7 +395,6 @@
             gap: 6px;
         }
 
-        /* Contact & Social Section */
         .contact-section {
             padding: 6rem 5%;
             background: var(--card-bg);
@@ -473,7 +468,6 @@
             border: 0;
         }
 
-        /* Footer */
         footer {
             text-align: center;
             padding: 2rem 5%;
@@ -482,7 +476,6 @@
             font-size: 0.9rem;
         }
 
-        /* Responsive Mobile Styling */
         @media (max-width: 768px) {
             header { padding: 1rem; }
             .hero h1 { font-size: 2.5rem; }
@@ -524,7 +517,7 @@
         </div>
     </section>
 
-    <!-- Leadership / Owners Section -->
+    <!-- Leadership Section -->
     <section class="leadership" id="management">
         <div class="section-title">
             <h2>Meet Our Leadership</h2>
@@ -534,7 +527,8 @@
             <!-- Owner -->
             <div class="leader-card">
                 <div class="leader-img-wrapper">
-                    <img src="https://i.freeimage.host/nh1Km7f.jpg" alt="Saver Electrics Owner">
+                    <!-- Yahan ImgBB ka direct link daalein -->
+                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80" alt="Saver Electrics Owner">
                 </div>
                 <h3>Founder & Owner</h3>
                 <div class="role">Saver Electrics Mardan</div>
@@ -543,7 +537,8 @@
             <!-- Managing Director -->
             <div class="leader-card">
                 <div class="leader-img-wrapper">
-                    <img src="https://i.freeimage.host/nh1KbdG.jpg" alt="Saver Electrics Management">
+                    <!-- Yahan ImgBB ka direct link daalein -->
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80" alt="Saver Electrics Management">
                 </div>
                 <h3>Managing Director</h3>
                 <div class="role">Next-Gen Decor Expert</div>
@@ -627,14 +622,11 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2026 Saver Electrics Mardan. All Rights Reserved.</p>
     </footer>
 
-    <!-- JavaScript & 3D Interactive Setup -->
     <script>
-        // Theme Switcher Logic
         const themeToggleBtn = document.getElementById('themeToggle');
         const themeText = document.getElementById('themeText');
         const themeIcon = themeToggleBtn.querySelector('i');
@@ -646,7 +638,6 @@
             themeIcon.className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         });
 
-        // 3D Animated Background Setup with Three.js
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -655,7 +646,6 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         container.appendChild(renderer.domElement);
 
-        // Particle System for Electric Atmosphere
         const geometry = new THREE.BufferGeometry();
         const count = 700;
         const positions = new Float32Array(count * 3);
@@ -678,7 +668,6 @@
 
         camera.position.z = 5;
 
-        // Interactive Mouse Movement Effect
         let mouseX = 0, mouseY = 0;
         window.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -697,7 +686,6 @@
         }
         animate();
 
-        // Responsive Resize
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
